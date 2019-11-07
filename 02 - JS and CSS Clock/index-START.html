@@ -62,13 +62,39 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: right;
+    }
+
+    .hand:first-of-type {
+      width: 30%;
+      margin-left: 20%;
     }
 
   </style>
 
   <script>
+    let dateNow, secondsNow, minutesNow, hoursNow;
+    const minuteInDegrees = 6;
+    const hourInDegrees = 30;
+    const [hourHand, minHand, secondHand] = document.querySelectorAll('.hand');
 
+    function setDate() {
+      dateNow = new Date();
 
+      secondsNow = dateNow.getSeconds() + 15;
+      minutesNow = dateNow.getMinutes() + 15;
+      hoursNow = dateNow.getHours() + 3;
+
+      secondHand.style.transform = `rotate(${minuteInDegrees * secondsNow}deg)`;
+      minHand.style.transform = `rotate(${minuteInDegrees * minutesNow}deg)`;
+      hourHand.style.transform = `rotate(${hourInDegrees * hoursNow}deg)`;
+    }
+
+    setInterval(() => {
+      setDate();
+    }, 1000);
+
+    setDate();
   </script>
 </body>
 </html>
