@@ -9,19 +9,23 @@
 
   <div class="controls">
     <label for="spacing">Spacing:</label>
-    <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+    <input id="spacing" type="range" name="spacing" min="0" max="200" value="10" data-sizing="px">
 
     <label for="blur">Blur:</label>
     <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
 
     <label for="base">Base Color</label>
-    <input id="base" type="color" name="base" value="#ffc600">
+    <input id="base" type="color" name="base" value="#ff7e7b">
   </div>
 
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
-
+    :root {
+      --base: #ff7e7b;
+      --blur: 10px;
+      --spacing: 10px;
+    }
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -42,9 +46,32 @@
     input {
       width: 100px;
     }
+
+    img {
+      background-color: var(--base);
+      padding: var(--spacing);
+      filter: blur(var(--blur));
+    }
+
+    .hl {
+      color: var(--base);
+    }
   </style>
 
   <script>
+    const inputs = document.querySelectorAll('input');
+
+    function setCssVariableForRoot(variableName, variableValue, valueType = '') {
+      document.documentElement.style.setProperty(`--${variableName}`, `${variableValue}${valueType}`);
+    }
+
+    inputs.forEach(input => input.addEventListener('change', ({target: {id, value, dataset: { sizing }}}) => {
+      setCssVariableForRoot(id, value, sizing);
+    }));
+
+    inputs.forEach(input => input.addEventListener('mousemove', ({target: {id, value, dataset: { sizing }}}) => {
+      setCssVariableForRoot(id, value, sizing);
+    }));
   </script>
 
 </body>
