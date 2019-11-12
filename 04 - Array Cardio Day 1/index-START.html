@@ -31,28 +31,47 @@
 
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
-
+    const filteredInventors = inventors.filter(({year}) => year >= 1500 && year < 1600);
+    console.log(filteredInventors);
     // Array.prototype.map()
     // 2. Give us an array of the inventors' first and last names
-
+    const inventorsWithNames = inventors.map(({first, last}) => ({first, last}));
+    console.log(inventorsWithNames);
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
-
+    const inventorsFromOldToYoung = inventors.sort((a, b) => a.year - b.year);
+    console.log(inventorsFromOldToYoung);
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live?
-
+    const totalYearsOfLive = inventors.reduce((acc, inv) => acc + (inv.passed - inv.year), 0);
+    console.log(totalYearsOfLive);
     // 5. Sort the inventors by years lived
-
+    const inventorsByYearsLived = inventors.sort((a, b) => (a.passed - a.year) - (b.passed - b.year));
+    console.log(inventorsByYearsLived);
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
-
+    const boulevardsWithDe = Array
+            .from(document.querySelectorAll('.mw-category-group > ul > li'))
+            .map((item) => item.outerText)
+            .filter((i) => i.includes(' de '));
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    const peopleSortedByLastName = people.sort((a, b) => {
+      const [lastNameA] = a.split(',');
+      const [lastNameB] = b.split(',');
+      return lastNameA > lastNameB ? 1 : -1;
+    });
+    console.log(peopleSortedByLastName);
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+    const dataWithInstancesSums = data.reduce((obj, item) => ({
+      ...obj,
+      [item]: ++obj[item]
+    }), { car: 0, truck: 0, bike: 0, walk: 0, van: 0 });
+    console.log(dataWithInstancesSums);
 
   </script>
 </body>
