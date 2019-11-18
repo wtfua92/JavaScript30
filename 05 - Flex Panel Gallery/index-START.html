@@ -26,10 +26,11 @@
     .panels {
       min-height: 100vh;
       overflow: hidden;
+      display: flex;
+      flex-direction: row;
     }
 
     .panel {
-      background: #6B0F9C;
       box-shadow: inset 0 0 0 5px rgba(255,255,255,0.1);
       color: white;
       text-align: center;
@@ -42,7 +43,11 @@
         background 0.2s;
       font-size: 20px;
       background-size: cover;
-      background-position: center;
+      background: #6B0F9C center;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
@@ -56,6 +61,23 @@
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
+      display: flex;
+      flex: 1 0 auto;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .panel > *:first-child {
+      transform: translateY(-100%);
+    }
+
+    .panel > *:last-child {
+      transform: translateY(100%);
+    }
+
+    .panel.open-active > *:first-child,
+    .panel.open-active > *:last-child {
+      transform: translateY(0);
     }
 
     .panel p {
@@ -71,6 +93,7 @@
 
     .panel.open {
       font-size: 40px;
+      flex: 5;
     }
 
   </style>
@@ -105,7 +128,17 @@
   </div>
 
   <script>
-
+    const panels = document.querySelectorAll('.panel');
+    panels.forEach((p) => {
+      p.addEventListener('click', function() {
+        this.classList.toggle('open');
+      });
+      p.addEventListener('transitionend', function (e) {
+        if (e.propertyName.includes('flex')) {
+          this.classList.toggle('open-active');
+        }
+      })
+    });
   </script>
 
 
