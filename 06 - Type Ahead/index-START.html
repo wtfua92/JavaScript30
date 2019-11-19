@@ -15,8 +15,44 @@
     </ul>
   </form>
 <script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  const input = document.querySelector('.search');
+  const list = document.querySelector('.suggestions');
+  const listInnerHtml = list.innerHTML;
 
+  function createListItem(content) {
+    const liElement = document.createElement('li');
+    liElement.textContent = content;
+    return liElement;
+  }
+
+  async function fetchCities() {
+    try {
+      const res = await fetch(endpoint);
+      return await res.json();
+    } catch (e) {
+      console.log(e);
+      return [];
+    }
+  }
+
+  (async function () {
+    const cities = await fetchCities();
+    let filteredCities = [];
+    if (cities.length > 0) {
+      input.addEventListener('input', ({target: { value }}) => {
+        if (value.length > 0) {
+          const regexp = new RegExp(value, 'gi');
+          list.innerHTML = '';
+          filteredCities = cities.filter(({city, state}) => city.match(regexp) || state.match(regexp));
+          let liCities = filteredCities.map(({city, state}) => createListItem(`${city}, ${state}`));
+          list.append(...liCities);
+        } else {
+          list.innerHTML = listInnerHtml;
+        }
+      });
+    }
+  })();
 </script>
 </body>
 </html>
