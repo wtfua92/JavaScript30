@@ -96,6 +96,21 @@
   </div>
 
 <script>
+  const checkboxes = [...document.querySelectorAll('input[type="checkbox"]')];
+  let firstCheckbox = checkboxes.length;
+  checkboxes.forEach((c, index) => {
+    c.addEventListener('mouseup', (e) => {
+      if (e.shiftKey) {
+        const sortedIndexs = [firstCheckbox, firstCheckbox > index ? index + 1 : index].sort((a, b) => a - b);
+        const checkboxesToCheck = checkboxes.slice(...sortedIndexs);
+        checkboxesToCheck.forEach((c) => {
+          c.checked = true;
+        });
+      } else {
+        firstCheckbox = index;
+      }
+    });
+  });
 </script>
 </body>
 </html>
